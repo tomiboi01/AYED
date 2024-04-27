@@ -7,7 +7,7 @@ public class AnalizadorArbol {
     public static double devolverMaximoPromedio (GeneralTree<AreaEmpresa>arbol)
     {
         if (arbol == null || arbol.isEmpty())
-            return -1;
+            return 0;
         GeneralTree<AreaEmpresa> arb = null;
         Queue<GeneralTree<AreaEmpresa>> cola = new Queue<GeneralTree<AreaEmpresa>>(); 
         double prom = arbol.getData().getTardanza();
@@ -26,7 +26,6 @@ public class AnalizadorArbol {
                 }
             }
             else 
-            {
                 if (!cola.isEmpty())
                 {   
                     cola.enqueue(null);
@@ -35,8 +34,6 @@ public class AnalizadorArbol {
                     suma = 0;
                     cantNodos = 0;
                 }
-            
-            }
 
         
         }
