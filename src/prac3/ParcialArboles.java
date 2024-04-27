@@ -9,13 +9,11 @@ public class ParcialArboles {
 	
 	private static class Aux{
 		int suma = 0;
-		LinkedList<Integer> camino = new LinkedList<Integer>();
-		public Aux(int suma, LinkedList<Integer> camino) {
-			super();
+		List<Integer> camino = new LinkedList<Integer>();
+	
+		public Aux(int suma) {
 			this.suma = suma;
-			this.camino = camino;
 		}
-
 
 		public int getSuma() {
 			return suma;
@@ -24,13 +22,12 @@ public class ParcialArboles {
 		public List<Integer> getCamino() {
 			return camino;
 		}
-		public void setSuma(int suma) {
+
+		public void actualizar(int suma, LinkedList<Integer> camino) {
 			this.suma = suma;
+			this.camino.clear();
+			this.camino.addAll(camino);
 		}
-		public void setCamino(LinkedList<Integer> camino) {
-			this.camino = camino;
-		}
-		
 		
 	}
 	
@@ -61,41 +58,36 @@ public class ParcialArboles {
 		return aux && (arbol.getData() == min);
 		
 	}
-	
-		
-	
-	
+
 	public static List<Integer> resolverBinario (GeneralTree<Integer> arbol)
 	{
-		List<Integer> lista = new LinkedList<Integer>();
+		Aux aux =  new Aux(0);
 		if (arbol != null && !arbol.isEmpty())
-			lista = resolverBinario(arbol, 0).getCamino();
-		return lista;
+			resolverBinario(arbol, 0, new LinkedList<Integer>(), 0, aux);
+		return aux.getCamino();
 	}
 	
 	
-	private static Aux resolverBinario(GeneralTree<Integer> arbol, int nivel)
+	private static void resolverBinario(GeneralTree<Integer> arbol, int nivel, List<Integer> actual, int suma, Aux max)
 	{
-		LinkedList<Integer> camino = new LinkedList<Integer>();
-		
-		if (arbol.getData()!= 0)
-			camino.add(arbol.getData());
-		
-		if (arbol.isLeaf())
-			return new Aux(arbol.getData() * nivel, camino);
-		
-		Aux aux;
-		Aux max = new Aux(Integer.MIN_VALUE, camino);
-		
-		List<GeneralTree<Integer>> hijos = arbol.getChildren();
-		for(GeneralTree<Integer> child:hijos) {
-			aux = resolverBinario(child, nivel+1);
-			if (aux.getSuma() > max.getSuma())
-				max = aux;
+		if (arbol.getData()==1)
+		{
+			actual.add(1);
+			suma += 1 * nivel;
 		}
-		max.getCamino().addAll(0, camino);
-		max.setSuma(max.getSuma()+arbol.getData()*nivel);
-		return max;
+		if ((arbol.isLeaf() && suma > max.getSuma()))
+				max.actualizar(suma, new LinkedList<Integer>(actual));
+		
+		for(GeneralTree<Integer> child: arbol.getChildren())
+		{
+			resolverBinario(child, nivel + 1, actual, suma, max);
+			
+		}
+		if (arbol.getData()==1)
+		{
+			actual.remove(actual.size()-1);
+			suma -= 1 * nivel;
+		}
 	}
 	
 	public static boolean resolver(GeneralTree<Integer> arbol) {
