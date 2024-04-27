@@ -1,4 +1,4 @@
-package ayuda;
+package prac3;
 
 public class Navidad {
 	private GeneralTree<Integer> arbol = new GeneralTree<Integer>();

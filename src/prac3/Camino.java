@@ -1,4 +1,4 @@
-package ayuda;
+package prac3;
 import java.util.List;
 import java.util.LinkedList;
 public class Camino {

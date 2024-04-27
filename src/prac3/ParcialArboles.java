@@ -1,8 +1,9 @@
-package ayuda;
+package prac3;
 
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import prac1.Queue;
 
 public class ParcialArboles {
 	
@@ -14,6 +15,8 @@ public class ParcialArboles {
 			this.suma = suma;
 			this.camino = camino;
 		}
+
+
 		public int getSuma() {
 			return suma;
 		}
