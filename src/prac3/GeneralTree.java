@@ -104,25 +104,20 @@ public class GeneralTree<T>{
 	}
 
 
-	public int altura()
-	{
-		if (isLeaf())
-			return 0;
-		return alturaRec();
+	public int altura(){
+		return alturaRec(0);
+	
 	}
-	private int alturaRec(){
-		int aux = 0;
-		int max = 0;
+
+	public int alturaRec(int nivel){
+		int max = nivel;
 		for(GeneralTree<T> child : getChildren())
 		{
-			if (!child.isLeaf())
-			{
-				aux = child.alturaRec();
-				if (aux > max)
-					max = aux;
-			}
+			int aux = child.alturaRec(nivel+1);
+			if (aux > max)
+				max = aux;
 		}
-		return max+1;
+		return max;
 	}
 
 	public int nivel (T dato){
@@ -135,12 +130,9 @@ public class GeneralTree<T>{
 		if (getData() == dato)
 			return nivel;
 		int niv = -1;
-		if (hasChildren())
-			{
-				Iterator<GeneralTree<T>> ite = children.iterator();
-				while (ite.hasNext() && niv == -1)
-					niv = ite.next().nivel(dato, nivel+1);
-			}
+		Iterator<GeneralTree<T>> ite = children.iterator();
+		while (ite.hasNext() && niv == -1)
+			niv = ite.next().nivel(dato, nivel+1);
 		return niv;
 	}
 
