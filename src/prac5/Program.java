@@ -8,10 +8,10 @@ import prac5.adjList.AdjListGraph;
 public class Program {
     public static void main(String[] args) {
         Graph<String> grafo = cargarGrafoCiudades();
-        Mapa map = new Mapa(grafo);
         List<String> ciudades = new ArrayList<String>();
-        ciudades.add("Barcelona");
-        for(String ciudad :  map.caminoMasCortoRec("Madrid","Malaga"))
+        ciudades.add("Zaragoza");
+
+        for(String ciudad : VisitaOslo.paseoEnBici(grafo, "Malaga", 65, ciudades))
             System.out.print(ciudad + " ----> ");
     }
 
@@ -21,7 +21,7 @@ public class Program {
     public static Graph<String> cargarGrafoCiudades()
     {
         Graph<String> grafo = new AdjListGraph<>();
-        grafo.createVertex("Madrid");
+        grafo.createVertex("Ayuntamiento");
         grafo.createVertex("Barcelona");
         grafo.createVertex("Valencia");
         grafo.createVertex("Sevilla");
@@ -39,7 +39,7 @@ public class Program {
         grafo.connect(v1, v3, 40);
         grafo.connect(v1, v0, 10);
         grafo.connect(v2, v0, 20);
-        grafo.connect(v3, v5, 1);
+        grafo.connect(v3, v5, 30);
         grafo.connect(v3, v1, 40);
         grafo.connect(v3, v0, 30);
         grafo.connect(v3, v4, 5);

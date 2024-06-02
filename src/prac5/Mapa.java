@@ -10,6 +10,27 @@ public class Mapa
 {
     private Graph<String> mapaCiudades = new AdjListGraph<>();
 
+    private class Min
+    {
+        int min = Integer.MAX_VALUE;
+        List<String> camino = new ArrayList<String>();
+
+        public void actualizar(int min, List<String> camino)
+        {
+            this.min = min;
+            this.camino.clear();
+            this.camino.addAll(camino);
+        }
+        public int getMin()
+        {
+            return min;
+        }
+        public List<String> getCamino()
+        {
+            return camino;
+        }
+    }
+
     public Mapa(Graph<String> grafo)
     {
         this.mapaCiudades = grafo;
@@ -203,26 +224,32 @@ public class Mapa
             return new ArrayList<String>();
         List<String> camino = new ArrayList<String>();
         boolean[] visitados = new boolean[mapaCiudades.getSize()];
-        caminoConMenorCargaDeCombustible(ciudad2,verticeC1, visitados, camino, tanqueAuto);
-        return camino;
+        Min regmin = new Min();
+        caminoConMenorCargaDeCombustible(ciudad2,verticeC1, visitados, tanqueAuto,tanqueAuto,camino, 0, regmin);
+        return regmin.getCamino();
 
     }
 
-    private boolean caminoConMenorCargaDeCombustible(String ciudad2, Vertex<String> v, boolean[] visitados, List<String> camino, int tanqueAuto)
+    private void caminoConMenorCargaDeCombustible(String ciudad2, Vertex<String> v, boolean[] visitados, int tanqueMax, int tanqueActual, List<String> camino,  int cantidadCargas, Min regmin)
     {
         camino.add(v.getData());
         visitados[v.getPosition()] = true;
-        if (v.getData().equals(ciudad2))
-            return true;
-
+        if (v.getData().equals(ciudad2) && cantidadCargas < regmin.getMin())
+            regmin.actualizar(cantidadCargas, camino);
+        else
         for(Edge<String> e : mapaCiudades.getEdges(v))
-            if (!visitados[e.getTarget().getPosition()] && e.getWeight() <= tanqueAuto && caminoConMenorCargaDeCombustible(ciudad2, e.getTarget(), visitados, camino, tanqueAuto - e.getWeight()))
-                return true;
+        {
+            if (!visitados[e.getTarget().getPosition()] && e.getWeight() < tanqueMax)
+            {  
+                if  (e.getWeight() > tanqueActual)
+                    caminoConMenorCargaDeCombustible(ciudad2, e.getTarget(), visitados, tanqueMax, tanqueMax, camino, cantidadCargas+1,regmin);
 
+               else caminoConMenorCargaDeCombustible(ciudad2, e.getTarget(), visitados, tanqueMax, tanqueActual - e.getWeight(), camino, cantidadCargas,regmin);
+                   
+            }
+        }
         camino.remove(camino.size() - 1);
         visitados[v.getPosition()] = false;
-    
-        return false;
     }
 
 }
