@@ -45,7 +45,7 @@ public class Recorridos<T> {
     {
         Queue<Vertex<T>> cola;
         boolean[] usado = new boolean[grafo.getSize()];
-        ArrayList<T> ret = new ArrayList<T>()
+        ArrayList<T> ret = new ArrayList<T>();
         for (Vertex<T> v : grafo.getVertices())
         {
             cola = new Queue<Vertex<T>>();
